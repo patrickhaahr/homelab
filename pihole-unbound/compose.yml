@@ -1,0 +1,55 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    environment:
+      TZ: ${TZ}
+      FTLCONF_webserver_api_pwhash: ${WEBSERVER_PWHASH}
+      FTLCONF_dns_listeningMode: ${DNS_LISTENINGMODE:-all}
+      FTLCONF_dns_upstreams: "127.0.0.1#5335"
+      FTLCONF_dhcp_active: ${DHCP_ACTIVE:-false}
+      FTLCONF_dhcp_ipv6: ${DHCP_IPV6_ACTIVE:-false}
+      FTLCONF_ntp_ipv4_active: ${NTP_IPV4_ACTIVE:-false}
+      FTLCONF_ntp_ipv6_active: ${NTP_IPV6_ACTIVE:-false}
+      FTLCONF_ntp_sync_active: ${NTP_SYNC_ACTIVE:-false}
+      FTLCONF_webserver_port: "80"
+      FTLCONF_webserver_interface: "0.0.0.0"
+      PIHOLE_UID: ${UID}
+      PIHOLE_GID: ${GID}
+    volumes:
+      - "./pihole/etc-pihole:/etc/pihole"
+    cap_add:
+      - SYS_NICE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        compress: "true"
+        labels: "service=pihole"
+    restart: unless-stopped
+    networks:
+      - caddy
+
+  unbound:
+    container_name: unbound
+    image: alpinelinux/unbound:latest
+    network_mode: service:pihole
+    volumes:
+      - ./unbound-config/unbound.conf:/etc/unbound/unbound.conf:ro
+      - ./unbound-config/unbound.conf.d:/etc/unbound/unbound.conf.d:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        compress: "true"
+        labels: "service=unbound"
+    restart: unless-stopped
+
+networks:
+  caddy:
+    external: true
