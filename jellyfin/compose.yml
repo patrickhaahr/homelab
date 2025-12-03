@@ -5,13 +5,10 @@ services:
     user: ${UID}:${GID}
     network_mode: host
     volumes:
-      - ${JELLYFIN_CONFIG}:/config
-      - ${JELLYFIN_CACHE}:/cache
-      - ${JELLYFIN_TV}:/tv
-      - ${JELLYFIN_ANIME_SERIES}:/anime_series
-      - ${JELLYFIN_ANIME_MOVIES}:/anime_movies
+      - ./config:/config
+      - ./cache:/cache
+      - ${JELLYFIN_SHOWS}:/shows
       - ${JELLYFIN_MOVIES}:/movies
-      - ${JELLYFIN_ONE_PIECE}:/one_piece
       # Optional fonts support (subtitle burn-in, transcoding)
       # - ${JELLYFIN_FONTS}:/usr/local/share/fonts/custom:ro
     restart: unless-stopped
