@@ -1,0 +1,20 @@
+# Ignore everything
+**
+
+# Keep directories
+!*/
+
+# Allow specific files/patterns
+!*.yml
+!env_example
+!LICENSE
+!README.md
+!Caddyfile
+!*.conf
+!Dockerfile
+
+# Keep local secrets and runtime data out of the repo
+**/.env
+forgejo/data/
+immich/library/
+qbittorrent/config/
