@@ -1,8 +1,106 @@
-{$VAULT_DOMAIN} {
-  reverse_proxy vaultwarden:80
+{
+    email caddy@haahr.me
 }
 
-pihole.lan {
-  tls internal
-  reverse_proxy pihole:80
+openhome.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	resolvers 1.1.1.1
+    }
+    
+    reverse_proxy openhome-api:8000
+
+    log {
+        output file /var/log/caddy/openhome.log
+        format json
+    }
+}
+
+vault.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy vaultwarden:80
+
+    log {
+        output file /var/log/caddy/vaultwarden.log
+        format json
+    }
+}
+
+jellyfin.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy jellyfin:8096
+
+    log {
+        output file /var/log/caddy/jellyfin.log
+        format json
+    }
+}
+
+immich.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    # Immich needs large body sizes for photo/video uploads
+    request_body {
+        max_size 0
+    }
+
+    reverse_proxy immich_server:2283
+
+    log {
+        output file /var/log/caddy/immich.log
+        format json
+    }
+}
+
+search.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy searxng-core:8080
+
+    log {
+        output file /var/log/caddy/searxng.log
+        format json
+    }
+}
+
+qbittorrent.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy qbittorrent:8080
+
+    log {
+        output file /var/log/caddy/qbittorrent.log
+        format json
+    }
+}
+
+forgejo.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy forgejo:3000
+
+    log {
+        output file /var/log/caddy/forgejo.log
+        format json
+    }
 }

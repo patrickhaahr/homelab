@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: caddy:latest
+    build: .
     container_name: caddy
     restart: unless-stopped
     ports:
@@ -8,12 +8,20 @@ services:
       - 443:443
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/etc/caddy/certs:ro
       - data:/data
       - config:/config
     networks:
       - caddy
     environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
       VAULT_DOMAIN: ${VAULT_DOMAIN}
+    healthcheck:
+      test: ["CMD", "caddy", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 volumes:
   data:
@@ -21,4 +29,4 @@ volumes:
 
 networks:
   caddy:
-    external: true
+    name: caddy
