@@ -1,0 +1,34 @@
+name: searxng
+services:
+  core:
+    container_name: searxng-core
+    image: docker.io/searxng/searxng:latest
+    restart: always
+    env_file: ./.env
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET}
+    networks:
+      - internal
+      - caddy
+    volumes:
+      - ./core-config/:/etc/searxng/:Z
+      - core-data:/var/cache/searxng/
+
+  valkey:
+    container_name: searxng-valkey
+    image: docker.io/valkey/valkey:9-alpine
+    command: valkey-server --save 30 1 --loglevel warning
+    restart: always
+    networks:
+      - internal
+    volumes:
+      - valkey-data:/data/
+
+volumes:
+  core-data:
+  valkey-data:
+
+networks:
+  internal:
+  caddy:
+    external: true
