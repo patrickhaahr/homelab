@@ -1,0 +1,47 @@
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:15-rootless
+    container_name: forgejo
+    user: "1000:1000"
+    restart: unless-stopped
+    environment:
+      USER_UID: 1000
+      USER_GID: 1000
+      FORGEJO__server__DOMAIN: forgejo.haahr.me
+      FORGEJO__server__ROOT_URL: https://forgejo.haahr.me/
+      FORGEJO__server__SSH_DOMAIN: forgejo.haahr.me
+      FORGEJO__server__PROTOCOL: http
+      FORGEJO__server__HTTP_PORT: 3000
+      FORGEJO__server__SSH_PORT: ${FORGEJO_SSH_PORT:-2222}
+      FORGEJO__server__START_SSH_SERVER: true
+      FORGEJO__service__DISABLE_REGISTRATION: true
+      FORGEJO__security__REVERSE_PROXY_LIMIT: 1
+      FORGEJO__security__REVERSE_PROXY_TRUSTED_PROXIES: 172.18.0.3/32
+      FORGEJO__security__PASSWORD_HASH_ALGO: argon2
+      FORGEJO__service__REQUIRE_SIGNIN_VIEW: true
+      FORGEJO__service__DEFAULT_KEEP_EMAIL_PRIVATE: true
+      FORGEJO__service__DEFAULT_ALLOW_CREATE_ORGANIZATION: false
+      FORGEJO__repository__DEFAULT_BRANCH: master
+      FORGEJO__openid__ENABLE_OPENID_SIGNIN: false
+      FORGEJO__openid__ENABLE_OPENID_SIGNUP: false
+    ports:
+      - "${FORGEJO_SSH_PORT:-2222}:2222"
+    volumes:
+      - forgejo-data:/var/lib/gitea
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - forgejo
+      - caddy
+
+volumes:
+  forgejo-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/forgejo
+
+networks:
+  forgejo:
+  caddy:
+    external: true
