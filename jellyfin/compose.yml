@@ -3,16 +3,19 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     user: ${UID}:${GID}
-    network_mode: host
+    networks:
+      - caddy
     volumes:
       - ./config:/config
       - ./cache:/cache
       - ${JELLYFIN_SHOWS}:/shows
       - ${JELLYFIN_MOVIES}:/movies
+      - ${JELLYFIN_BOOKS}:/books
       # Optional fonts support (subtitle burn-in, transcoding)
       # - ${JELLYFIN_FONTS}:/usr/local/share/fonts/custom:ro
     restart: unless-stopped
     environment:
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_PUBLISHED_URL}
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+networks:
+  caddy:
+    external: true
