@@ -7,6 +7,7 @@
 # Allow specific files/patterns
 !*.yml
 !env_example
+!.env.example
 !LICENSE
 !README.md
 !Caddyfile
@@ -17,4 +18,5 @@
 **/.env
 forgejo/data/
 immich/library/
+immich/postgres/
 qbittorrent/config/
