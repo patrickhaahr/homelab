@@ -1,0 +1,14 @@
+services:
+  pandora:
+    container_name: pandora
+    build:
+      context: .
+    restart: unless-stopped
+    volumes:
+      - ./data:/malware
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true

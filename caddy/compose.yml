@@ -9,6 +9,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./certs:/etc/caddy/certs:ro
+      - ./sites:/srv/sites:ro
       - data:/data
       - config:/config
     networks:
