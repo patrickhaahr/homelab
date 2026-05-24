@@ -1,0 +1,21 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes
+    restart: unless-stopped
+    command: gateway run
+    shm_size: 1gb
+    environment:
+      HERMES_DASHBOARD: "1"
+      HERMES_DASHBOARD_HOST: 0.0.0.0
+      HERMES_DASHBOARD_PORT: "9119"
+    volumes:
+      - ./data:/opt/data
+    mem_limit: 2g
+    cpus: 2.0
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
