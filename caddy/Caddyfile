@@ -141,3 +141,31 @@ pandora.haahr.me {
         format json
     }
 }
+
+hermes.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy hermes:9119
+
+    log {
+        output file /var/log/caddy/hermes.log
+        format json
+    }
+}
+
+draw.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy excalidraw:80
+
+    log {
+        output file /var/log/caddy/excalidraw.log
+        format json
+    }
+}
