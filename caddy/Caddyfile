@@ -169,3 +169,17 @@ draw.haahr.me {
         format json
     }
 }
+
+wishlist.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy wishlist:3280
+
+    log {
+        output file /var/log/caddy/wishlist.log
+        format json
+    }
+}
