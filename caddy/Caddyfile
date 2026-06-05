@@ -183,3 +183,17 @@ wishlist.haahr.me {
         format json
     }
 }
+
+homepage.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    reverse_proxy homepage:3000
+
+    log {
+        output file /var/log/caddy/homepage.log
+        format json
+    }
+}
