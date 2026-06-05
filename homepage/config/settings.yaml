@@ -1,0 +1,8 @@
+title: Homepage
+description: Homelab dashboard
+color: slate
+layout:
+  Media:
+  Infrastructure:
+  Utilities:
+  Development:

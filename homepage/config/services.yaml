@@ -1,0 +1,51 @@
+- Media:
+    - Jellyfin:
+        href: https://jellyfin.haahr.me
+        icon: jellyfin.png
+        description: Media server
+
+- Infrastructure:
+    - Immich:
+        href: https://immich.haahr.me
+        icon: immich.png
+        description: Photo library
+    - Vaultwarden:
+        href: https://vault.haahr.me
+        icon: vaultwarden.png
+        description: Password manager
+
+- Utilities:
+    - SearXNG:
+        href: https://search.haahr.me
+        icon: searxng.png
+        description: Search
+    - qBittorrent:
+        href: https://qbittorrent.haahr.me
+        icon: qbittorrent.png
+        description: Downloads
+    - Wishlist:
+        href: https://wishlist.haahr.me
+        icon: sh-link.png
+        description: Shared wishlist
+    - Pandora:
+        href: https://pandora.haahr.me
+        icon: shield-half-filled.png
+        description: Security scanner
+    - Excalidraw:
+        href: https://draw.haahr.me
+        icon: excalidraw.png
+        description: Whiteboard
+
+- Development:
+    - Forgejo:
+        href: https://forgejo.haahr.me
+        icon: forgejo.png
+        description: Git hosting
+    - Hermes:
+        href: https://hermes.haahr.me
+        icon: si-openai.svg
+        description: Agent gateway
+    - OpenHome:
+        href: https://openhome.haahr.me
+        icon: home-assistant.png
+        description: Home automation API

@@ -6,6 +6,7 @@
 
 # Allow specific files/patterns
 !*.yml
+!homepage/config/*.yaml
 !env_example
 !.env.example
 !LICENSE
