@@ -14,6 +14,9 @@ services:
       - config:/config
     networks:
       - caddy
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     environment:
       CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
       VAULT_DOMAIN: ${VAULT_DOMAIN}

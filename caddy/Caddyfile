@@ -8,7 +8,13 @@ openhome.haahr.me {
 	resolvers 1.1.1.1
     }
     
-    reverse_proxy openhome-api:8000
+    handle /mcp* {
+        reverse_proxy openhome-mcp:8001
+    }
+
+    handle {
+        reverse_proxy openhome-api:8000
+    }
 
     log {
         output file /var/log/caddy/openhome.log
@@ -195,5 +201,29 @@ homepage.haahr.me {
     log {
         output file /var/log/caddy/homepage.log
         format json
+    }
+}
+
+# DNS-over-HTTPS front for AdGuard Home on the router (LAN + tailnet only).
+# No log block on purpose: GET DoH requests carry the query in the URL.
+dns.haahr.me {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+        propagation_delay 30s
+        propagation_timeout -1
+    }
+
+    @doh {
+        path /dns-query
+        remote_ip private_ranges 100.64.0.0/10
+    }
+
+    handle @doh {
+        reverse_proxy 10.0.10.1:3000
+    }
+
+    handle {
+        respond 404
     }
 }
