@@ -1,6 +1,6 @@
 services:
   openhome-api:
-    image: patrickhaahr/openhome-api:latest
+    image: patrickhaahr/openhome-api:0.5.0
     container_name: openhome-api
     restart: unless-stopped
     volumes:
@@ -11,8 +11,28 @@ services:
     environment:
       API_KEY: ${API_KEY:?Set API_KEY in .env}
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in .env}
+      NOOP_PUSH_TOKEN: ${NOOP_PUSH_TOKEN:?Set NOOP_PUSH_TOKEN in .env}
     healthcheck:
       test: ["CMD-SHELL", "curl -f -H \"Authorization: Bearer $$API_KEY\" http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - caddy
+
+  openhome-mcp:
+    image: patrickhaahr/openhome-mcp:0.2.0
+    container_name: openhome-mcp
+    restart: unless-stopped
+    depends_on:
+      openhome-api:
+        condition: service_healthy
+    environment:
+      OPENHOME_API_URL: http://openhome-api:8000
+      API_KEY: ${API_KEY:?Set API_KEY in .env}
+      MCP_ALLOWED_HOSTS: ${MCP_ALLOWED_HOSTS:-openhome.haahr.me}
+    healthcheck:
+      test: ["CMD-SHELL", "[ \"$$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8001/mcp)\" = 401 ]"]
       interval: 30s
       timeout: 10s
       retries: 3
